@@ -7,6 +7,9 @@ use App\Http\Controllers\admin\productcontroller;
 use App\Http\Controllers\admin\productdiscountcontroller;
 use App\Http\Controllers\admin\subcategorycontroller;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\seller\sellermaincontroller;
+use App\Http\Controllers\seller\sellerproductcontroller;
+use App\Http\Controllers\seller\sellerstorecontroller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,6 +39,10 @@ Route::middleware(['auth', 'verified', 'rolemanager:admin'])->group(function () 
             Route::get('/subcategory/create', 'index')->name('subcategory.create');
             Route::get('/subcategory/manage', 'manage')->name('subcategory.manage');
         });
+        Route::controller(productcontroller::class)->group(function(){
+            Route::get('/product/manage', 'index')->name('product.manage');
+            Route::get('/product/review/manage', 'review_manage')->name('product.review.manage');
+        });
         Route::controller(productattributecontroller::class)->group(function(){
             Route::get('/productattribute/create', 'index')->name('productattribute.create');
             Route::get('/productattribute/manage', 'review_manage')->name('productattribute.manage');
@@ -46,11 +53,25 @@ Route::middleware(['auth', 'verified', 'rolemanager:admin'])->group(function () 
         });
     });
 });
+//seller route
+Route::middleware(['auth', 'verified', 'rolemanager:seller'])->group(function () {
+    Route::prefix('seller')->group(function(){
+        Route::controller(sellermaincontroller::class)->group(function(){
+            Route::get('/dashboard', 'index')->name('seller');
+            Route::get('/order/history', 'orderhistory')->name('seller.orderhistory');
+        });
 
+        Route::controller(sellerproductcontroller::class)->group(function(){
+            Route::get('/product/create', 'index')->name('seller.product.create');
+            Route::get('/product/manage', 'manage')->name('seller.product.manage');
+        });
 
-Route::get('/seller/dashboard', function () {
-    return view('seller');
-})->middleware(['auth', 'verified', 'rolemanager:seller'])->name('seller');
+        Route::controller(sellerstorecontroller::class)->group(function(){
+            Route::get('/store/create', 'index')->name('seller.store.create');
+            Route::get('/store/manage', 'manage')->name('seller.store.manage');
+        });
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
