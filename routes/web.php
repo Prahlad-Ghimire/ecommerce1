@@ -36,6 +36,10 @@ Route::middleware(['auth', 'verified', 'rolemanager:admin'])->group(function () 
             Route::get('/subcategory/create', 'index')->name('subcategory.create');
             Route::get('/subcategory/manage', 'manage')->name('subcategory.manage');
         });
+        Route::controller(productcontroller::class)->group(function(){
+            Route::get('/product/manage', 'index')->name('product.create');
+            Route::get('/product/review/manage', 'review_manage')->name('product.review.manage');
+        });
         Route::controller(productattributecontroller::class)->group(function(){
             Route::get('/productattribute/create', 'index')->name('productattribute.create');
             Route::get('/productattribute/manage', 'review_manage')->name('productattribute.manage');
