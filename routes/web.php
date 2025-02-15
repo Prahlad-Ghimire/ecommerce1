@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\productcontroller;
 use App\Http\Controllers\admin\productdiscountcontroller;
 use App\Http\Controllers\admin\subcategorycontroller;
 use App\Http\Controllers\customer\customermaincontroller;
+use App\Http\Controllers\mastercategorycontroller;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\seller\sellermaincontroller;
 use App\Http\Controllers\seller\sellerproductcontroller;
@@ -46,6 +47,9 @@ Route::middleware(['auth', 'verified', 'rolemanager:admin'])->group(function () 
         Route::controller(productdiscountcontroller::class)->group(function(){
             Route::get('/discount/create', 'index')->name('discount.create');
             Route::get('/discount/manage', 'review_manage')->name('discount.manage');
+        });
+        Route::controller(mastercategorycontroller::class)->group(function(){
+            Route::post('/store/category', 'storecat')->name('store.cat');
         });
     });
 });
