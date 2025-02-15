@@ -6,6 +6,8 @@ use App\Http\Controllers\admin\productattributecontroller;
 use App\Http\Controllers\admin\productcontroller;
 use App\Http\Controllers\admin\productdiscountcontroller;
 use App\Http\Controllers\admin\subcategorycontroller;
+use App\Http\Controllers\customer\customermaincontroller;
+use App\Http\Controllers\mastercategorycontroller;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\seller\sellermaincontroller;
 use App\Http\Controllers\seller\sellerproductcontroller;
@@ -15,11 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified', 'rolemanager:customer'])->name('dashboard');
-
 //admin routes 
 Route::middleware(['auth', 'verified', 'rolemanager:admin'])->group(function () {
     Route::prefix('admin')->group(function(){
@@ -51,6 +48,9 @@ Route::middleware(['auth', 'verified', 'rolemanager:admin'])->group(function () 
             Route::get('/discount/create', 'index')->name('discount.create');
             Route::get('/discount/manage', 'review_manage')->name('discount.manage');
         });
+        Route::controller(mastercategorycontroller::class)->group(function(){
+            Route::post('/store/category', 'storecat')->name('store.cat');
+        });
     });
 });
 //seller route
@@ -69,6 +69,17 @@ Route::middleware(['auth', 'verified', 'rolemanager:seller'])->group(function ()
         Route::controller(sellerstorecontroller::class)->group(function(){
             Route::get('/store/create', 'index')->name('seller.store.create');
             Route::get('/store/manage', 'manage')->name('seller.store.manage');
+        });
+    });
+});
+//customer routes
+Route::middleware(['auth', 'verified', 'rolemanager:customer'])->group(function () {
+    Route::prefix('customer')->group(function(){
+        Route::controller(customermaincontroller::class)->group(function(){
+            Route::get('/dashboard', 'index')->name('dashboard');
+            Route::get('/order/history', 'history')->name('customer.history');
+            Route::get('/setting/payment', 'payment')->name('customer.payment');
+            Route::get('/affiliate', 'affiliate')->name('customer.affiliate');
         });
     });
 });
