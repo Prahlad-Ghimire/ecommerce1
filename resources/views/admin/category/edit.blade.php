@@ -26,12 +26,13 @@ Edit Category - Admin Panel
                     {{session('message')}}
                 </div>
                 @endif
-                <form action="" method="POST">
+                <form action="{{route('update.cat', $category_info->id)}}" method="POST">
                     @csrf
+                    @method('PUT')
                     <label for="category_name" class="fw-bold mb-1">Category Name</label>
-                    <input type="text" class="form-control mt-1" placeholder="Computer" value="{{$category_info->category_name}}">
+                    <input type="text" class="form-control mt-1" name="category_name" placeholder="Computer" value="{{$category_info->category_name}}">
 
-                    <button type="submit" class="btn btn-primary mt-2">Edit Category</button>
+                    <button type="submit" class="btn btn-primary mt-2">Update Category</button>
                 </form>
             </div>
         </div>
