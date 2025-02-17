@@ -13,6 +13,10 @@ class mastercategorycontroller extends Controller
         ]);
 
         Category::create($validate_data);
-        return redirect()->back();
+        return redirect()->back()->with('message','Catgeory Added Successfully');
+    }
+    public function editcat($id){
+        $category_info = Category::find($id);
+        return view('admin.category.edit', compact('category_info'));
     }
 }

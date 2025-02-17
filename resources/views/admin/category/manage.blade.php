@@ -25,7 +25,10 @@
                                         <tr>
                                             <td>{{$cat->id}}</td>
                                             <td>{{$cat->category_name}}</td>
-                                            <td><a href="#" class="btn btn-danger">Delete</a></td>
+                                            <td>
+                                                <a href="#" class="btn btn-danger">Delete</a>
+                                                <a href="{{route('edit.cat', $cat->id)}}" class="btn btn-primary">Edit</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tr>
