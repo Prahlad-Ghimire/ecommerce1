@@ -9,6 +9,11 @@
                 <div class="card-header">
                     <h5 class="card-title mb-0">All Category</h5>
                 </div>
+                @if (session('message'))
+                <div class="text-success text-bold">
+                    {{session('message')}}
+                </div>
+                @endif
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
@@ -26,8 +31,12 @@
                                             <td>{{$cat->id}}</td>
                                             <td>{{$cat->category_name}}</td>
                                             <td>
-                                                <a href="#" class="btn btn-danger">Delete</a>
-                                                <a href="{{route('edit.cat', $cat->id)}}" class="btn btn-primary">Edit</a>
+                                                <form action={{route('delete.cat', $cat->id)}} method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input type="submit" value="Delete" class="btn btn-danger w-25 mb-2">
+                                                </form>
+                                                <a href="{{route('edit.cat', $cat->id)}}" class="btn btn-primary w-25">Edit</a>
                                             </td>
                                         </tr>
                                     @endforeach
